@@ -1,0 +1,82 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.micronaut.application") version "4.3.3"
+    id("io.micronaut.aot") version "4.3.3"
+}
+
+version = "0.1"
+group = "com.example"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("io.micronaut.data:micronaut-data-processor:4.3.3")
+    annotationProcessor("io.micronaut:micronaut-http-validation:2.8.1")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor:2.8.1")
+    implementation("io.micronaut.data:micronaut-data-jdbc:4.3.3")
+    implementation("io.micronaut.serde:micronaut-serde-jackson:2.8.1")
+    implementation("io.micronaut.sql:micronaut-jdbc-ucp:5.5.1")
+    compileOnly("io.micronaut:micronaut-http-client:4.3.3")
+    runtimeOnly("ch.qos.logback:logback-classic:1.5.0")
+    runtimeOnly("com.h2database:h2:2.1.210")
+    testImplementation("io.micronaut:micronaut-http-client:4.3.3")
+    testImplementation('io.cucumber:cucumber-java:7.15.0')
+    testImplementation('io.cucumber:cucumber-junit:7.15.0')
+    implementation 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+    runtimeOnly("org.yaml:snakeyaml:2.2")
+    implementation("io.micronaut:micronaut-http-server-netty:4.3.3")
+    implementation("io.micronaut:micronaut-http-client:4.3.3")
+    implementation("io.micronaut:micronaut-runtime:4.3.3")
+    implementation 'io.micronaut:micronaut-inject:4.3.3'
+    implementation 'org.apache.logging.log4j:log4j-core:2.23.0'
+    implementation 'org.apache.logging.log4j:log4j-api:2.23.0'
+    runtimeOnly 'com.oracle.database.jdbc:ojdbc10:19.22.0.0'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.16.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.16.1'
+}
+
+
+application {
+    mainClass.set("com.example.Application")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("18")
+    targetCompatibility = JavaVersion.toVersion("18")
+}
+
+
+graalvmNative.toolchainDetection = false
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.example.*")
+    }
+    aot {
+    // Please review carefully the optimizations enabled below
+    // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
+        optimizeServiceLoading = false
+        convertYamlToJava = false
+        precomputeOperations = true
+        cacheEnvironment = true
+        optimizeClassLoading = true
+        deduceEnvironment = true
+        optimizeNetty = true
+    }
+}
+
+tasks.named("dockerfile") {
+    baseImage("eclipse-temurin:21-jre-jammy")
+}
+
+tasks.named("dockerfileNative") {
+    jdkVersion = "21"
+}
+
+

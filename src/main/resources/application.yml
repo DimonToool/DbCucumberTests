@@ -1,0 +1,32 @@
+micronaut:
+  config:
+    import: "${ECS_LOCAL_CONFIGS}/root.yaml"
+  application:
+    name: DbCucumberTests
+  server:
+    port: 8080
+datasources:
+  default:
+    url: ${dwh.qa_sa.url}
+    username: ${dwh.qa_sa.creds.username}
+    password: ${dwh.qa_sa.creds.password}
+#    schema-generate: NONE
+    driverClassName: oracle.jdbc.OracleDriver
+    dialect: ORACLE
+    db-type: oracle
+#flyway:
+#  datasources:
+#    default:
+#      enabled: true
+#      baselineOnMigrate: true
+#      baseline-version: 0
+
+#netty:
+#  default:
+#    allocator:
+#      max-order: 3
+
+logger:
+  levels:
+    com.example.acceptance.steps: INFO
+
