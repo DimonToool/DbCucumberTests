@@ -63,9 +63,9 @@ public class DatabaseQueryExecutor {
         }
     }
 
-    public void executeProcedure(String procedureCall) throws SQLException {
+    public void executeProcedure(String procedureName) throws SQLException {
         try (Connection connection = databaseConnection.getConnection();
-             CallableStatement callableStatement = connection.prepareCall(procedureCall)) {
+             CallableStatement callableStatement = connection.prepareCall("call %s".formatted(procedureName))) {
             callableStatement.execute();
         } catch (SQLException e) {
             log.error("Error executing procedure", e);

@@ -34,6 +34,6 @@ public class ExecuteDdl {
     @When("Execute DDL {string}")
     public void executeDbDdl(String ddl) throws SQLException {
         dbOperations.executeDbUpdate(executor -> executeDdl(ddl), databaseQueryExecutor);
-        databaseQueryExecutor.getDatabaseConnection().getConnection().commit();
+//        databaseQueryExecutor.getDatabaseConnection().getConnection().commit();
     }
 }
